@@ -7,6 +7,8 @@ class Bird {
 private:
   int toJump = 0;         // if 0 no jump otherwise animate jumping
   float jumpDelay = 0.0f; // delay before consecutive jumps
+  bool jumping = false;
+  bool canJump = true;
   float movementSpeed;
   Vector2 birdSize;
 

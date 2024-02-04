@@ -1,6 +1,7 @@
+#include <raylib.h>
+
 #include "FlappyBird.hpp"
 #include "Raylib.hpp"
-#include <raylib.h>
 
 int main() {
   Raylib *raylib = new Raylib;

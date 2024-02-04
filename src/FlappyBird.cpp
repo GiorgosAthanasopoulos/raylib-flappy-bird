@@ -1,9 +1,8 @@
 #include "FlappyBird.hpp"
 #include "Config.hpp"
 
-// TODO: fix bound check for bird
-// TODO: fix pipe scale
-// TODO: implement resize for all entities
+// TODO: animate game -- make map/camera dynamic
+// move to the right and spawn new random pipes.
 
 FlappyBird::FlappyBird() {
   winSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
@@ -30,13 +29,13 @@ void FlappyBird::Update() {
   winSize = {(float)GetRenderWidth(), (float)GetRenderHeight()};
 
   if (bird->dead) {
-    if (IsKeyDown(KEY_SPACE)) {
+    if (IsKeyDown(KEY_RESTART)) {
       Reset();
     }
   }
   bird->Update(winSize, assets->groundSize);
 
-  for (int i = 0; i < pipes.size(); ++i) {
+  for (long unsigned int i = 0; i < pipes.size(); ++i) {
     if (CheckCollisionRecs(pipes[i],
                            {bird->pos.x, bird->pos.y, assets->birdSize.x,
                             assets->birdSize.y})) {
@@ -59,17 +58,16 @@ void FlappyBird::Draw() {
                     assets->groundSize.x, assets->groundSize.y},
                    {0, 0}, 0, GROUND_TINT);
   }
-  for (int i = 0; i < pipes.size(); ++i) {
+  for (long unsigned int i = 0; i < pipes.size(); ++i) {
     DrawTexturePro(assets->tiles, assets->pipes[0], pipes[i], {0, 0}, 0,
                    PIPE_TINT);
   }
   if (!bird->dead) {
     bird->Draw(assets->bird, assets->birds[0], assets->birdSize);
   } else {
-    const char *deadText = "YOU DIED!";
-    int fontSize = H1_FONT_SIZE;
-    int deadTextWidth = MeasureText(deadText, fontSize);
-    DrawText(deadText, winSize.x / 2 - (float)deadTextWidth / 2,
-             winSize.y / 2 - (float)fontSize / 2, fontSize, DEAD_TEXT_COLOR);
+    int deadTextWidth = MeasureText(DEATH_TEXT, DEATH_TEXT_FONT_SIZE);
+    DrawText(DEATH_TEXT, winSize.x / 2 - (float)deadTextWidth / 2,
+             winSize.y / 2 - (float)DEATH_TEXT_FONT_SIZE / 2,
+             DEATH_TEXT_FONT_SIZE, DEAD_TEXT_COLOR);
   }
 }

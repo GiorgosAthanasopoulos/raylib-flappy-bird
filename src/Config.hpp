@@ -4,15 +4,16 @@
 #include <raylib.h>
 
 // WINDOW
-#define WINDOW_FLAGS FLAG_WINDOW_RESIZABLE
-#define WINDOW_WIDTH 1080
+#define WINDOW_FLAGS
+#define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 #define WINDOW_TITLE "Flappy Bird"
 #define TARGET_FPS 60
 
 // KEYBINDS
 #define KEY_EXIT KEY_NULL
-#define KEY_PLAYER_JUMP KEY_SPACE
+#define KEY_RESTART KEY_SPACE
+#define KEY_PLAYER_JUMP KEY_W
 #define KEY_PLAYER_MOVE_RIGHT KEY_D
 #define KEY_PLAYER_MOVE_LEFT KEY_A
 
@@ -27,6 +28,7 @@
 // PLAYER
 #define PLAYER_MOVEMENT_SPEED_FACTOR 6
 #define JUMP_PIXELS 150
+#define JUMP_DELAY 0.5f
 
 // ASSETS
 #define ASSETS "assets/"
@@ -48,5 +50,7 @@
 
 // UI
 #define H1_FONT_SIZE 100
+#define DEATH_TEXT "YOU DIED!"
+#define DEATH_TEXT_FONT_SIZE H1_FONT_SIZE
 
 #endif // CONFIG_H_

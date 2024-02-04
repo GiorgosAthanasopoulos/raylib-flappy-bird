@@ -1,6 +1,5 @@
 #include "Assets.hpp"
 #include "Config.hpp"
-#include "Utils.hpp"
 
 Assets::Assets() {
   bg = LoadTexture(BACKGROUND_TEXTURE);
@@ -13,7 +12,7 @@ Assets::Assets() {
   pipeSize = {tilesImageSize.x / TILES_TILESHEET_PIPE_COUNT,
               TILES_TILESHEET_PIPE_HEIGHT};
   groundSize = {tilesImageSize.x / TILES_TILESHEET_GROUND_COUNT,
-                tilesImageSize.y / pipeSize.y};
+                tilesImageSize.y - pipeSize.y};
   birdSize = {birdImageSize.x / BIRD_TILESHEET_BIRD_COUNT_ROW,
               birdImageSize.y / BIRD_TILESHEET_BIRD_COUNT_COL};
 
@@ -30,9 +29,12 @@ Assets::Assets() {
     }
   }
 
-  pipeSize *= PIPE_SCALE_FACTOR;
-  groundSize *= GROUND_SCALE_FACTOR;
-  birdSize *= BIRD_SCALE_FACTOR;
+  pipeSize.x *= PIPE_SCALE_FACTOR;
+  pipeSize.y *= PIPE_SCALE_FACTOR;
+  groundSize.x *= GROUND_SCALE_FACTOR;
+  groundSize.y *= GROUND_SCALE_FACTOR;
+  birdSize.x *= BIRD_SCALE_FACTOR;
+  birdSize.y *= BIRD_SCALE_FACTOR;
 }
 
 Assets::~Assets() {

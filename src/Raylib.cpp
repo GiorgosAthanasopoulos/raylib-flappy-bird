@@ -4,7 +4,7 @@
 #include "Raylib.hpp"
 
 Raylib::Raylib() {
-  SetConfigFlags(WINDOW_FLAGS);
+  SetConfigFlags(0);
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
   InitAudioDevice();
   SetTargetFPS(TARGET_FPS);
