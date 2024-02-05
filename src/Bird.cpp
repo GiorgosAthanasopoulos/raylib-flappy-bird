@@ -69,10 +69,11 @@ void Bird::Update(Vector2 winSize, Vector2 groundSize) {
 
 void Bird::Reset(Vector2 winSize, Vector2 groundSize) {
   dead = false;
+  pos = {0, winSize.y - groundSize.y - birdSize.y};
   toJump = 0;
   jumpDelay = 0.0f;
   jumping = false;
-  pos = {0, winSize.y - groundSize.y - birdSize.y};
+  canJump = true;
 }
 
 void Bird::Draw(Texture2D texture, Rectangle source, Vector2 dim) {

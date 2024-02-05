@@ -2,13 +2,18 @@
 
 #include "FlappyBird.hpp"
 
+// TODO: fix collisions -- because of scaling there is whitespace in sprites
+// causing ghosting collisions
+// TODO: fix pipe generation algorithm -- sometimes pipe spawn too close to one
+// another
+
 FlappyBird::FlappyBird() {
   winSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
 
   assets = new Assets;
   bird = new Bird(winSize, assets->groundSize, assets->birdSize);
 
-  for (int i = 0; i < 3; ++i) {
+  for (int i = 0; i < INITIAL_PIPE_COUNT; ++i) {
     SpawnNewPipe();
   }
 }
@@ -53,22 +58,29 @@ void FlappyBird::Update() {
   }
 }
 
-void FlappyBird::Reset() { bird->Reset(winSize, assets->groundSize); }
+void FlappyBird::Reset() {
+  bird->Reset(winSize, assets->groundSize);
+  pipes.clear();
+  for (int i = 0; i < INITIAL_PIPE_COUNT; ++i) {
+    SpawnNewPipe();
+  }
+}
 
 void FlappyBird::SpawnNewPipe() {
-  int rightMostPipeX =
+  float newPipeY = GetRandomValue(0, 10) % 2 == 0
+                       ? 0
+                       : winSize.y - assets->groundSize.y - assets->pipeSize.y;
+  float rightMostPipeX =
       assets->birdSize.x * INITIAL_PIPE_BUFFER_REL_TO_BIRD_SIZE;
+
   for (int i = 0; i < pipes.size(); ++i) {
     if (pipes[i].x > rightMostPipeX) {
       rightMostPipeX = pipes[i].x;
     }
   }
-  // TODO: make sure new pipe is at least groundSize.x apart from other pipes
 
-  float newPipeX = GetRandomValue(rightMostPipeX, winSize.x);
-  float newPipeY = GetRandomValue(0, 1) ? 0
-                                        : winSize.y - assets->groundSize.y -
-                                              assets->pipeSize.y; // 1 == TOP
+  float newPipeX =
+      GetRandomValue(rightMostPipeX + assets->groundSize.x * 2, winSize.x);
   pipes.push_back({newPipeX, newPipeY, assets->pipeSize.x, assets->pipeSize.y});
 }
 
