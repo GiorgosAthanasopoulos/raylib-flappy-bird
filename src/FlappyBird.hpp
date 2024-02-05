@@ -5,12 +5,14 @@
 
 #include "Assets.hpp"
 #include "Bird.hpp"
+#include "Config.hpp"
 
 class FlappyBird {
 private:
   Assets *assets;
   Bird *bird;
   std::vector<Rectangle> pipes;
+  float pipeSpawnDelay = PIPE_SPAWN_DELAY;
 
 public:
   Vector2 winSize;
@@ -23,6 +25,8 @@ public:
   void Draw();
 
   void Reset();
+
+  void SpawnNewPipe();
 };
 
 #endif // GAME_H_

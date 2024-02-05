@@ -1,8 +1,6 @@
-#include "FlappyBird.hpp"
-#include "Config.hpp"
+#include <raylib.h>
 
-// TODO: animate game -- make map/camera dynamic
-// move to the right and spawn new random pipes.
+#include "FlappyBird.hpp"
 
 FlappyBird::FlappyBird() {
   winSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
@@ -10,14 +8,9 @@ FlappyBird::FlappyBird() {
   assets = new Assets;
   bird = new Bird(winSize, assets->groundSize, assets->birdSize);
 
-  pipes.push_back({winSize.x / 3,
-                   winSize.y - assets->groundSize.y - assets->pipeSize.y,
-                   assets->pipeSize.x, assets->pipeSize.y});
-  pipes.push_back(
-      {2 * winSize.x / 3, 0, assets->pipeSize.x, assets->pipeSize.y});
-  pipes.push_back({winSize.x - assets->pipeSize.x,
-                   winSize.y - assets->groundSize.y - assets->pipeSize.y,
-                   assets->pipeSize.x, assets->pipeSize.y});
+  for (int i = 0; i < 3; ++i) {
+    SpawnNewPipe();
+  }
 }
 
 FlappyBird::~FlappyBird() {
@@ -32,10 +25,26 @@ void FlappyBird::Update() {
     if (IsKeyDown(KEY_RESTART)) {
       Reset();
     }
+    return;
   }
   bird->Update(winSize, assets->groundSize);
 
+  pipeSpawnDelay -= GetFrameTime();
+  if (pipeSpawnDelay <= 0) {
+    pipeSpawnDelay = PIPE_SPAWN_DELAY;
+    SpawnNewPipe();
+  }
+
+  float pipeMovementSpeed =
+      winSize.x / PIPE_MOVEMENT_SPEED_FACTOR * GetFrameTime();
   for (long unsigned int i = 0; i < pipes.size(); ++i) {
+    pipes[i].x -= pipeMovementSpeed;
+
+    // pipe moved out of viewport -- remove it
+    if (pipes[i].x < 0) {
+      pipes.erase(pipes.begin() + i);
+    }
+
     if (CheckCollisionRecs(pipes[i],
                            {bird->pos.x, bird->pos.y, assets->birdSize.x,
                             assets->birdSize.y})) {
@@ -46,8 +55,26 @@ void FlappyBird::Update() {
 
 void FlappyBird::Reset() { bird->Reset(winSize, assets->groundSize); }
 
+void FlappyBird::SpawnNewPipe() {
+  int rightMostPipeX =
+      assets->birdSize.x * INITIAL_PIPE_BUFFER_REL_TO_BIRD_SIZE;
+  for (int i = 0; i < pipes.size(); ++i) {
+    if (pipes[i].x > rightMostPipeX) {
+      rightMostPipeX = pipes[i].x;
+    }
+  }
+  // TODO: make sure new pipe is at least groundSize.x apart from other pipes
+
+  float newPipeX = GetRandomValue(rightMostPipeX, winSize.x);
+  float newPipeY = GetRandomValue(0, 1) ? 0
+                                        : winSize.y - assets->groundSize.y -
+                                              assets->pipeSize.y; // 1 == TOP
+  pipes.push_back({newPipeX, newPipeY, assets->pipeSize.x, assets->pipeSize.y});
+}
+
 void FlappyBird::Draw() {
   ClearBackground(BACKGROUND_COLOR);
+
   DrawTexturePro(assets->bg,
                  {0, 0, (float)assets->bg.width, (float)assets->bg.height},
                  {0, 0, winSize.x, winSize.y - assets->groundSize.y}, {0, 0}, 0,
@@ -62,6 +89,7 @@ void FlappyBird::Draw() {
     DrawTexturePro(assets->tiles, assets->pipes[0], pipes[i], {0, 0}, 0,
                    PIPE_TINT);
   }
+
   if (!bird->dead) {
     bird->Draw(assets->bird, assets->birds[0], assets->birdSize);
   } else {

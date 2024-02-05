@@ -9,7 +9,6 @@ private:
   float jumpDelay = 0.0f; // delay before consecutive jumps
   bool jumping = false;
   bool canJump = true;
-  float movementSpeed;
   Vector2 birdSize;
 
 public:

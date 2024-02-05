@@ -6,7 +6,6 @@
 Bird::Bird(Vector2 winSize, Vector2 groundSize, Vector2 birdSize) {
   pos = {0, winSize.y - groundSize.y - birdSize.y};
   this->birdSize = birdSize;
-  movementSpeed = winSize.x / PLAYER_MOVEMENT_SPEED_FACTOR;
 }
 
 Bird::~Bird() {}
@@ -26,7 +25,8 @@ void Bird::Update(Vector2 winSize, Vector2 groundSize) {
     }
   }
 
-  float movementSpeed = this->movementSpeed * GetFrameTime();
+  float movementSpeed =
+      winSize.x / PLAYER_MOVEMENT_SPEED_FACTOR * GetFrameTime();
 
   if (IsKeyPressed(KEY_PLAYER_JUMP) && canJump) {
     jumping = true;
