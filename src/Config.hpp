@@ -4,7 +4,7 @@
 #include <raylib.h>
 
 // WINDOW
-#define WINDOW_FLAGS
+#define WINDOW_FLAGS 0
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 #define WINDOW_TITLE "Flappy Bird"

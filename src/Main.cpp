@@ -10,7 +10,9 @@ int main() {
   while (!WindowShouldClose()) {
     game->Update();
     BeginDrawing();
+#ifdef DEBUG
     DrawFPS(0, 0);
+#endif
     game->Draw();
     EndDrawing();
   }

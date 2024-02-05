@@ -2,10 +2,11 @@
 
 #include "FlappyBird.hpp"
 
-// TODO: fix collisions -- because of scaling there is whitespace in sprites
-// causing ghosting collisions
-// TODO: fix pipe generation algorithm -- sometimes pipe spawn too close to one
-// another
+// TODO: #2 fix collisions -- because of scaling there is whitespace in sprites
+// causing ghost collisions
+// TODO: #1 fix pipe generation algorithm -- sometimes pipes spawn too close to
+// one another
+// TODO: #3 make window resizable and scale entities accordingly
 
 FlappyBird::FlappyBird() {
   winSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
