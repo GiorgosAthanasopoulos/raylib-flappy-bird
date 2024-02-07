@@ -3,13 +3,13 @@
 
 #include <raylib.h>
 
+#include "Config.hpp"
+
 class Bird {
 private:
-  int toJump = 0;         // if 0 no jump otherwise animate jumping
-  float jumpDelay = 0.0f; // delay before consecutive jumps
-  bool jumping = false;
-  bool canJump = true;
   Vector2 birdSize;
+  int toJump = 0;
+  float jumpDelay = 0.0f;
 
 public:
   Vector2 pos;

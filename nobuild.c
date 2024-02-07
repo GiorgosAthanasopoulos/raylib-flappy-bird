@@ -8,8 +8,8 @@
   "-Wall", "-Wextra", "-pedantic", "-std=c++20", "-O3", "-s", "-DNDEBUG"
 #define BUILD_DIR "build/"
 #define SRC                                                                    \
-  "src/Assets.cpp", "src/Bird.cpp", "src/Raylib.cpp", "src/FlappyBird.cpp",    \
-      "src/Main.cpp"
+  "src/Utils.cpp", "src/Assets.cpp", "src/Bird.cpp", "src/Raylib.cpp",         \
+      "src/FlappyBird.cpp", "src/Main.cpp"
 #define TARGET BUILD_DIR "FlappyBird"
 #define LDFLAGS "-lraylib", "-lm"
 

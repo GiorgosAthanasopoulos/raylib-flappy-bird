@@ -15,24 +15,18 @@ void Bird::Update(Vector2 winSize, Vector2 groundSize) {
     return;
   }
 
-  if (jumpDelay > 0.0f) {
+  if (toJump == 0 && jumpDelay > 0.0f) {
     jumpDelay -= GetFrameTime();
     if (jumpDelay <= 0.0f) {
       jumpDelay = 0.0f;
-      canJump = true;
-      jumping = false;
-      toJump = 0;
     }
   }
 
   float movementSpeed =
       winSize.x / PLAYER_MOVEMENT_SPEED_FACTOR * GetFrameTime();
 
-  if (IsKeyPressed(KEY_PLAYER_JUMP) && canJump) {
-    jumping = true;
-    canJump = false;
+  if (IsKeyPressed(KEY_PLAYER_JUMP)) {
     toJump = JUMP_PIXELS;
-    jumpDelay = JUMP_DELAY;
   }
   if (IsKeyDown(KEY_PLAYER_MOVE_RIGHT)) {
     pos.x += movementSpeed;
@@ -41,16 +35,15 @@ void Bird::Update(Vector2 winSize, Vector2 groundSize) {
     pos.x -= movementSpeed;
   }
 
-  if (!jumping) {
-    pos.y += movementSpeed;
-  } else {
+  if (toJump > 0) {
     pos.y -= movementSpeed;
     toJump -= movementSpeed;
     if (toJump <= 0) {
-      jumping = false;
       toJump = 0;
       jumpDelay = JUMP_DELAY;
     }
+  } else {
+    pos.y += movementSpeed;
   }
 
   if (pos.x < 0) {
@@ -72,8 +65,6 @@ void Bird::Reset(Vector2 winSize, Vector2 groundSize) {
   pos = {0, winSize.y - groundSize.y - birdSize.y};
   toJump = 0;
   jumpDelay = 0.0f;
-  jumping = false;
-  canJump = true;
 }
 
 void Bird::Draw(Texture2D texture, Rectangle source, Vector2 dim) {

@@ -12,7 +12,9 @@ private:
   Assets *assets;
   Bird *bird;
   std::vector<Rectangle> pipes;
+
   float pipeSpawnDelay = PIPE_SPAWN_DELAY;
+  float score = 0;
 
 public:
   Vector2 winSize;

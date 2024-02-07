@@ -1,12 +1,15 @@
 #include <raylib.h>
+#include <sstream>
 
+#include "Config.hpp"
 #include "FlappyBird.hpp"
+#include "Utils.hpp"
 
-// TODO: #2 fix collisions -- because of scaling there is whitespace in sprites
+// TODO: #3 fix collisions -- because of scaling there is whitespace in sprites
 // causing ghost collisions
-// TODO: #1 fix pipe generation algorithm -- sometimes pipes spawn too close to
+// TODO: #2 fix pipe generation algorithm -- sometimes pipes spawn too close to
 // one another
-// TODO: #3 make window resizable and scale entities accordingly
+// TODO: #4 make window resizable and scale entities accordingly
 
 FlappyBird::FlappyBird() {
   winSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
@@ -35,6 +38,8 @@ void FlappyBird::Update() {
   }
   bird->Update(winSize, assets->groundSize);
 
+  score += GetFrameTime();
+
   pipeSpawnDelay -= GetFrameTime();
   if (pipeSpawnDelay <= 0) {
     pipeSpawnDelay = PIPE_SPAWN_DELAY;
@@ -47,7 +52,7 @@ void FlappyBird::Update() {
     pipes[i].x -= pipeMovementSpeed;
 
     // pipe moved out of viewport -- remove it
-    if (pipes[i].x < 0) {
+    if (pipes[i].x + pipes[i].width < 0) {
       pipes.erase(pipes.begin() + i);
     }
 
@@ -102,6 +107,15 @@ void FlappyBird::Draw() {
     DrawTexturePro(assets->tiles, assets->pipes[0], pipes[i], {0, 0}, 0,
                    PIPE_TINT);
   }
+
+  std::ostringstream scoreTextSS;
+  scoreTextSS << SCORE_TEXT;
+  scoreTextSS << (int)score;
+  std::string scoreText = scoreTextSS.str();
+  int fontSize = AssertTextFitsInViewport(
+      scoreText.c_str(), SCORE_TEXT_FONT_SIZE, {winSize.x / 2, winSize.y / 10});
+  int scoreTextWidth = MeasureText(scoreText.c_str(), fontSize);
+  DrawText(scoreText.c_str(), 10, 10, fontSize, SCORE_TEXT_COLOR);
 
   if (!bird->dead) {
     bird->Draw(assets->bird, assets->birds[0], assets->birdSize);
