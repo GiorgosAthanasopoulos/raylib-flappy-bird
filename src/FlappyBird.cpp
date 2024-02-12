@@ -10,6 +10,7 @@
 // TODO: #2 fix pipe generation algorithm -- sometimes pipes spawn too close to
 // one another
 // TODO: #4 make window resizable and scale entities accordingly
+// TODO: #5 move pipes faster the higher the score you have
 
 FlappyBird::FlappyBird() {
   winSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
@@ -76,8 +77,7 @@ void FlappyBird::SpawnNewPipe() {
   float newPipeY = GetRandomValue(0, 10) % 2 == 0
                        ? 0
                        : winSize.y - assets->groundSize.y - assets->pipeSize.y;
-  float rightMostPipeX =
-      assets->birdSize.x * INITIAL_PIPE_BUFFER_REL_TO_BIRD_SIZE;
+  float rightMostPipeX = assets->groundSize.x * 3;
 
   for (int i = 0; i < pipes.size(); ++i) {
     if (pipes[i].x > rightMostPipeX) {
